@@ -150,7 +150,8 @@ namespace WakaTime {
           if (request.downloadHandler.text == string.Empty) {
             Debug.LogWarning(
               "<WakaTime> Network is unreachable. Consider disabling completely if you're working offline");
-            return;
+            request.Dispose();
+			  return;
           }
 
           if (_debug)
@@ -173,6 +174,8 @@ namespace WakaTime {
             if (_debug) Debug.Log("<WakaTime> Sent heartbeat!");
             _lastHeartbeat = response.data;
           }
+
+		  request.Dispose();
         };
     }
 
@@ -213,11 +216,11 @@ namespace WakaTime {
       if (clean) {
         EditorApplication.playModeStateChanged -= OnPlaymodeStateChanged;
         EditorApplication.contextualPropertyMenu -= OnPropertyContextMenu;
-        #if UNITY_2018_1_OR_NEWER
+#if UNITY_2018_1_OR_NEWER
           EditorApplication.hierarchyChanged -= OnHierarchyWindowChanged;
-        #else
+#else
           EditorApplication.hierarchyWindowChanged -= OnHierarchyWindowChanged;
-        #endif
+#endif
         EditorSceneManager.sceneSaved -= OnSceneSaved;
         EditorSceneManager.sceneOpened -= OnSceneOpened;
         EditorSceneManager.sceneClosing -= OnSceneClosing;
@@ -226,11 +229,11 @@ namespace WakaTime {
 
       EditorApplication.playModeStateChanged += OnPlaymodeStateChanged;
       EditorApplication.contextualPropertyMenu += OnPropertyContextMenu;
-      #if UNITY_2018_1_OR_NEWER
+#if UNITY_2018_1_OR_NEWER
         EditorApplication.hierarchyChanged += OnHierarchyWindowChanged;
-      #else
+#else
         EditorApplication.hierarchyWindowChanged += OnHierarchyWindowChanged;
-      #endif
+#endif
       EditorSceneManager.sceneSaved += OnSceneSaved;
       EditorSceneManager.sceneOpened += OnSceneOpened;
       EditorSceneManager.sceneClosing += OnSceneClosing;
